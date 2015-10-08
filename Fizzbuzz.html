@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>FizzBuzz</title>
+
+		
+	</head>
+	<body>
+    <div>
+	<script type="text/javascript">
+
+var num=[];
+for (var i = 1; i < 100; i++) {
+  num.push(i);
+};
+
+
+for (var i = 1; i < 100; i++) {
+  var n=i-1;
+  if (num[n]%3==0 && num[n]%5==0) {
+    document.write("Fizz Buzz" + "<br>");
+  }
+  else if(num[n]%3==0){
+    document.write("Fizz" + "<br>");
+  }
+  else if(num[n]%5==0){
+    document.write("Buzz" + "<br>");
+  }
+  else{
+    document.write(num[n]+ "<br>");
+  }
+};
+
+	</script>  
+	
+		
+	</div>	
+		
+	    
+	  
+	
+
+</body></html>
