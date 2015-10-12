@@ -8,30 +8,48 @@
 		
 	</head>
 	<body>
-    <div>
+    <div id="fizzbuzz">
 	<script type="text/javascript">
+var num=parseInt(prompt("Please Enter a Number"));
 
-var num=[];
-for (var i = 1; i < 100; i++) {
-  num.push(i);
+function Printer(divId) {
+  var lineCount = 1;
+  
+  this.printLine = function() {
+    var m = lineCount + ': ';
+    
+    for (var i = 0; i < arguments.length; i++) {
+      m += arguments[i] + ' ';
+    }
+
+    var n = document.createElement("pre"),
+        t = document.createTextNode(m);
+
+    n.appendChild(t);
+    document.getElementById(divId).appendChild(n);
+    
+    lineCount++;
+  }
+}
+
+var fizzbuzzPrinter  = new Printer('fizzbuzz');
+var fzPrint = fizzbuzzPrinter.printLine;
+
+function fizzbuzz(max) {
+  for ( var i = 1; i <= max; i++ ) {
+    if (i % 5 == 0 && i % 3 == 0) {
+      fzPrint("FizzBuzz");
+    } else if ( i % 3 == 0 ) {
+      fzPrint("Fizz");
+    } else if (i % 5 == 0) {
+      fzPrint("Buzz");
+    } else {
+      fzPrint(i);
+    }
+  }
 };
 
-
-for (var i = 1; i < 100; i++) {
-  var n=i-1;
-  if (num[n]%3==0 && num[n]%5==0) {
-    document.write("Fizz Buzz" + "<br>");
-  }
-  else if(num[n]%3==0){
-    document.write("Fizz" + "<br>");
-  }
-  else if(num[n]%5==0){
-    document.write("Buzz" + "<br>");
-  }
-  else{
-    document.write(num[n]+ "<br>");
-  }
-};
+fizzbuzz(num);
 
 	</script>  
 	
