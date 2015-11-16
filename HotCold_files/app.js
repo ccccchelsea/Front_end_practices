@@ -1,4 +1,6 @@
 
+'use strict';
+
 $(document).ready(function(){
 	
 	/*--- Display information modal box ---*/
@@ -12,15 +14,9 @@ $(document).ready(function(){
   		$(".overlay").fadeOut(1000);
   	});
 
+	var Answer= Math.floor((Math.random()*100)+1); 
 
-  	
- //  	var Input = $('#userGuess').val();
- //  	var Input_val=parseInt(Input);
-	// var guesslist='<li>'+ Input+ '</li>';
-
-	// var Answer= Math.floor((Math.random()*100)+1); ?????
-	Answer= Math.floor((Math.random()*100)+1);
-	Count=1;
+	var Count=1;
 	
 	$(document).on("click", ".new", function(){
 
@@ -29,7 +25,6 @@ $(document).ready(function(){
 		$("#feedback").empty().prepend('Make your Guess!');
 		$(".guessBox").empty();
 		$("#count").empty().prepend(Count);
-		Count++;
 
 	});
 
@@ -49,46 +44,52 @@ $(document).ready(function(){
 
 		event.preventDefault();
 
-		if(('input' !== null) || ( isNan('input')) || (1 < 'input' < 101)) {
+		var Input = parseInt($('#userGuess').val());
+
+		if((Input !== null) && ( !isNan(Input)) && (1 <= Input < 101)) {
 
 			$("#feedback").empty();
 
-			Input = parseInt($('#userGuess').val());
-			guesslist='<li>'+ Input+ '</li>';
-			Compare(Answer);
-			
-			$("#count").empty().prepend(Count);
+			var guesslist='<li>'+ Input+ '</li>';
+			$(".guessBox").append(guesslist);
+
+			Compare(Answer, Input);
 			Count++;
+			$("#count").empty().prepend(Count);
+		
 			$('#userGuess').val('');
 		}	
 
 	});
 
-	function Compare(a){
-		var com = Math.abs(Input - a);
+	function Compare(a,b){
+		var com = Math.abs(b - a);
 		if (com > 50){
 			$("#feedback").empty().prepend('Ice Cold!');
-			$(".guessBox").append(guesslist);
+			
 		}
 		else if(com >=30 && com <= 50 ){
 			$("#feedback").empty().prepend('Cold!');
-			$(".guessBox").append(guesslist);
+			
 		}
 		else if(com >= 20 && com < 30 ){
 			$("#feedback").empty().prepend('Warm!');
-			$(".guessBox").append(guesslist);
+			
 		}
 		else if(com >=10 && com < 20){
 			$("#feedback").empty().prepend('Hot!');
-			$(".guessBox").append(guesslist);
+			
 		}
 		else if(com >0 && com <10){
 			$("#feedback").empty().prepend('Super Hot!');
-			$(".guessBox").append(guesslist);
+			
+		}
+		else if(com == 0){
+			$("#feedback").empty().prepend('YOU GOT IT RIGHT!');
+			
 		}
 		else{
-			$("#feedback").empty().prepend('YOU GOT IT RIGHT!');
-			$(".guessBox").append(guesslist);
+			alert('What????');//shouldn't happen 
 		}
 	}
 

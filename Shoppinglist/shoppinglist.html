@@ -49,18 +49,28 @@
 		font-size: 1.5em;
 	}
 
+	.list_item:hover {
+	    font-weight: bold;
+	    background: 
+	    -webkit-linear-gradient(rgba(244,252,240,0.3), rgba(244,252,240,0.3));
+	    background: 
+	    -o-linear-gradient(rgba(244,252,240,0.3), rgba(244,252,240,0.3));
+	    background: 
+	    linear-gradient(rgba(244,252,240,0.3), rgba(244,252,240,0.3));
+	}
+
 	.divider{
 		background-color: black;
 		opacity: 0.3;
 		margin-bottom: 1%;
 	}
 	
-	.cross-off, .uncross{
+	.cross-off{
 		cursor: pointer;
-    	margin-top: 5px;
-    	float: right;
-    	height: 22px;
-    	width: 22px;
+    	margin-bottom: 5px;
+    	float: left;
+    	height: 20px;
+    	width: 20px;
     	color: green;
     	
 	}
@@ -68,16 +78,23 @@
 	.delete{
 		cursor: pointer;
     	margin-top: 5px;
-    	float: left;
-    	height: 22px;
-    	width: 22px;
+    	float: right;
+    	height: 25px;
+    	width: 25px;
     	color: green;
     	
 	}
 
-	.clicked_cross{
+	.clicked{
 		text-decoration: line-through;
 	}
+
+	
+
+	.input-field label {
+		top: 0.5rem;
+    	left: 1.5rem;
+    }
 
 
 
@@ -132,7 +149,7 @@
 
 		
 		
-        <div class="input-field col s6 offset-s3" >
+        <div class="input-field col s8 m6 l4 offset-s2 offset-m3 offset-l4" >
         	<center>Enter each item below, then press enter</center>
 
 			<input type="text" class="validate input" placeholder="Add things to your list">
@@ -140,10 +157,15 @@
 			<div class="list">
 
 				<div class="list_item">
-					<span class="delete"><i class="material-icons">clear</i></span>
-					Apple
-					<span class="cross-off"><i class="material-icons">done</i></span>
 
+					<span class="cross-off">
+						<input type="checkbox" class="filled-in" id="filled-in-box">
+						<label for="filled-in-box"></label>
+					</span>
+					Apple
+					<span class="delete">
+						<i class="material-icons">clear</i>
+					</span>
 					<div class="divider"></div>
 			
 				</div>
@@ -178,15 +200,13 @@ $(document).ready(function () {
 	function postinput(){
 
 	var item = $('input').val();
-	var new_list_item= '<div class="list_item"> <span class="delete "><i class="material-icons">clear</i></span>' 
+	var new_list_item= '<div class="list_item"><span class="cross-off"><input type="checkbox" class="filled-in" id="filled-in-box"><label for="filled-in-box"></label></span>' 
 						+ item 
-						+ '<span class="cross-off"><i class="material-icons">done</i></span><div class="divider"></div></div>' ;
+						+ '<span class="delete"><i class="material-icons">clear</i></span><div class="divider"></div>' ;
 
 	$('input').val('');
-	$('.list').children().first().animate(
-											{'margin-top': '1%'},
-  											500);
-	$('.list').prepend(new_list_item);
+	
+	$('.list').append(new_list_item);
 	
 	}
 
@@ -197,21 +217,27 @@ $(document).ready(function () {
     	$(this).closest('.list_item').fadeOut(300);
 	});
 
-	//cross off item
-	$(document).on("click", ".cross-off", function(){
-    	$(this).closest('.list_item').addClass("clicked_cross");
-    	$('.list_item').children("span.cross-off").empty();
-    	$("span.cross-off").append('<i class="material-icons">undo</i>').removeClass("cross-off").addClass("uncross");
-	});
+	// cross off/uncross item
 
-	//uncross item
-	$(document).on("click", ".uncross", function(){
-    	$(this).closest('.list_item').removeClass("clicked_cross");
-    	$('.list_item').children("span.uncross").empty();
-    	$("span.uncross").append('<i class="material-icons">done</i>').removeClass("uncross").addClass("cross-off");
-	});
+	$('.list').on("mousedown", ".cross-off", function(){
+		
+		$(this).parent(".list_item").toggleClass("clicked");
+
+		if ($(this).parent(".list_item").hasClass("clicked")) {
+
+			$(this).children("input").prop( "checked", false);
+		}
+
+		else {
+
+			$(this).children("input").prop( "checked", true);
+		}
+			
+	});  
 
 });
+
+
 
 </script>
 </body>
