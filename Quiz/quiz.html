@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="bootstrap.css"/>
+	<link href='http://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
+	<!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+     
+	<title>Quiz</title>
+	<style type="text/css">
+	
+	.Q{
+		float: right;
+	}
+	.title{
+		float: left;
+	}
+
+	.divider{
+		border-bottom: 1px solid;
+		clear: both;
+	}
+
+	.content .question, .content ul{
+		text-align: center;
+
+	}
+
+	.content ul li{
+		display: inline-block;
+
+	}
+
+	img{
+    	border-radius: 50%;
+    	cursor: pointer;
+	}
+
+	/*img:hover{
+		 border: 6px solid #d9bfa7;
+	}*/
+
+
+	h2{
+		margin: 3%;
+		font-family: 'Josefin Sans', sans-serif;
+	}
+
+	.question{
+		font-family: Palatino,Palatino Linotype,Palatino LT STD,Book Antiqua,Georgia,serif; 
+		font-size: 1.8em;
+		margin-bottom: 6%;
+		margin-top: 5%;
+	}
+
+	p{
+		margin: 3%;
+		font-family: 'Josefin Sans', sans-serif;
+		font-size: 1.5em;
+	}
+
+	.text{
+		text-align: center;
+		margin-top: 0;
+		margin-bottom: 3%;
+		font-family: Palatino,Palatino Linotype,Palatino LT STD,Book Antiqua,Georgia,serif; 
+		font-size: 1.5em;
+	}
+
+	ul{
+		padding: 0;
+		margin-bottom: 4%;
+
+	}
+
+	li{
+		margin: 4%;
+		list-style-type:none; 
+		
+	}
+
+	button{
+		display: block; 
+  		font-family: Palatino,Palatino Linotype,Palatino LT STD,Book Antiqua,Georgia,serif;
+  		color: black;
+  		border-color: black;
+  		border-width: 1px;
+  		font-size: 1.5em;
+  		background: white;
+  		padding: 12px 70px 12px 70px;
+  		text-decoration: none;
+  		margin: auto;
+  	}
+
+  	button:hover {
+  		background: #d9bfa7;
+  		text-decoration: none;
+  		border-style: none;
+  	}
+
+  	.correct{
+		color: #9bb53b;
+  	}
+
+  	.incorrect{
+  		color: #932434;
+  	}
+    
+
+
+	</style>
+</head>
+<body>
+
+	<header>
+		<h2 class="title">WOODY PLANT QUIZ</h2>
+		<p class="Q"> Q<span class="Qnum">1</span>/5</p>
+		<div class="divider"></div>
+	</header>
+	
+	<div class="content">
+	
+		<h3 class="question"></h3>
+
+		<ul>
+			<li><img></li>
+			<li><img></li>
+			<li><img ></li>
+			<li><img></li>
+			
+		</ul>
+	</div>
+	
+	<!-- <h4 class="text">Please choose an answer from images above first.</h4> -->
+	<h4 class="text">Please choose an answer from images above first.</h4>
+	<button>Submit Answer</button>
+
+<script type="text/javascript">
+	
+
+	$(document).ready(function () {
+
+		function Plant(name, question, img_choice, correct) {
+
+			this.name = name;
+			this.question = question;
+			this.img_choice= img_choice;
+			this.correct = correct;
+
+		}
+		
+		var woodyplants = new Array();
+
+		woodyplants[0] = new Plant(
+			"Magnolia",
+			"Which of these following plant belongs to Magnolia family?",
+			["Magnolia.jpg", "Tuliptree.jpg", "Viburnum.jpg", "Sassafras.jpg"],
+			"Magnolia.jpg"
+			);
+
+		woodyplants[1] = new Plant(
+
+			);
+
+
+		var newQuestion = function(){
+			$(".question").prepend(woodyplants[0].question);
+
+			var i = 0;
+
+			$("img").each(function(){
+
+				$(this).attr('src', woodyplants[0].img_choice[i]);
+				i++;
+			});
+
+		}
+
+		newQuestion();
+
+		//Record the selected answer
+		$(document).on("click", "img", function(){
+
+			$(this).css("border", "6px solid #d9bfa7");
+			submission= $(this). attr('src');
+		
+		});
+
+		//Click Button to check the answer
+		$("button").click(function(){
+
+			if(submission == woodyplants[0].correct){
+
+				$(".text").text("This is the Correct Answer!");
+				$(".text").addClass("correct");
+				$("button").text("Next Question").addClass("next");
+			}
+			else{
+
+				$(".text").text("This is not the Correct Answer!");
+				$(".text").addClass("incorrect");
+				$("button").text("Try Again").addClass("tryagain");
+
+			}
+
+		});
+
+
+
+	});
+
+
+
+
+</script>	
+	
+</body>
+
+</html>
