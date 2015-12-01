@@ -4,7 +4,6 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="bootstrap.css"/>
 	<link href='http://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
 	<!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -39,11 +38,13 @@
 	img{
     	border-radius: 50%;
     	cursor: pointer;
+    	border: 6px solid transparent;
+
 	}
 
-	/*img:hover{
+	img:hover{
 		 border: 6px solid #d9bfa7;
-	}*/
+	}
 
 
 	h2{
@@ -54,6 +55,7 @@
 	.question{
 		font-family: Palatino,Palatino Linotype,Palatino LT STD,Book Antiqua,Georgia,serif; 
 		font-size: 1.8em;
+		font-weight: 200;
 		margin-bottom: 6%;
 		margin-top: 5%;
 	}
@@ -64,12 +66,13 @@
 		font-size: 1.5em;
 	}
 
-	.text{
+	.text, .lastquestion{
 		text-align: center;
 		margin-top: 0;
 		margin-bottom: 3%;
 		font-family: Palatino,Palatino Linotype,Palatino LT STD,Book Antiqua,Georgia,serif; 
 		font-size: 1.5em;
+		font-weight: 200;
 	}
 
 	ul{
@@ -104,13 +107,20 @@
   	}
 
   	.correct{
-		color: #9bb53b;
+		color: #8ceda1;
   	}
 
   	.incorrect{
   		color: #932434;
   	}
+
+  	#incorrect{
+  		border: 6px solid #932434;
+  	}
     
+    .selected{
+    	border: 6px solid #8ceda1;
+    }
 
 
 	</style>
@@ -119,7 +129,7 @@
 
 	<header>
 		<h2 class="title">WOODY PLANT QUIZ</h2>
-		<p class="Q"> Q<span class="Qnum">1</span>/5</p>
+		<p class="Q"> Q<span class="Qnum"></span>/5</p>
 		<div class="divider"></div>
 	</header>
 	
@@ -130,20 +140,31 @@
 		<ul>
 			<li><img></li>
 			<li><img></li>
-			<li><img ></li>
+			<li><img></li>
 			<li><img></li>
 			
 		</ul>
 	</div>
 	
 	<!-- <h4 class="text">Please choose an answer from images above first.</h4> -->
-	<h4 class="text">Please choose an answer from images above first.</h4>
-	<button>Submit Answer</button>
+	<p class="text">Please choose an answer from images above first.</p>
+	<p class="lastquestion"><span class="correct">This is the correct answer</span>
+	   <span>and the Last Question!</span></p>
+	
+	<button class="submit">Submit Answer</button>
+	<button class="next">Next Question</button>
+	<button class="tryagain">Try Again</button>
 
 <script type="text/javascript">
 	
 
 	$(document).ready(function () {
+
+
+		var submission="";
+		var current_index=0;
+		var q_number=0;
+		$(".lastquestion").hide();
 
 		function Plant(name, question, img_choice, correct) {
 
@@ -158,57 +179,123 @@
 
 		woodyplants[0] = new Plant(
 			"Magnolia",
-			"Which of these following plant belongs to Magnolia family?",
+			"Which of these following plants belongs to Magnolia family?",
 			["Magnolia.jpg", "Tuliptree.jpg", "Viburnum.jpg", "Sassafras.jpg"],
 			"Magnolia.jpg"
 			);
 
 		woodyplants[1] = new Plant(
 
+			"Letterleaf",
+			"Which of these following plants lives in bogs?",
+			["Ginkgo.jpg", "Viburnum.jpg", "leather_leaf.jpg", "Sassafras.jpg"],
+			"leather_leaf.jpg"
+			);
+
+		woodyplants[2] = new Plant(
+
+			"Letterleaf",
+			"Which of these following plants lives in bogs FOR REAL?",
+			["Ginkgo.jpg", "Viburnum.jpg", "leather_leaf.jpg", "Sassafras.jpg"],
+			"leather_leaf.jpg"
 			);
 
 
-		var newQuestion = function(){
-			$(".question").prepend(woodyplants[0].question);
+		var newQuestion = function(plant_index){
+			$(".question").empty();
+			$(".question").prepend(woodyplants[plant_index].question);
+			$(".submit").text("Submit Answer")
+					   .removeClass('tryagain');
+
+			$('.text').text('Please choose an answer from images above first.')
+					  .removeClass('correct')
+					  .removeClass('incorrect');
 
 			var i = 0;
-
+			$('img').removeAttr('id');
 			$("img").each(function(){
-
-				$(this).attr('src', woodyplants[0].img_choice[i]);
+				$(this).removeClass('selected');
+				submission="";
+				$(this).attr('src', woodyplants[plant_index].img_choice[i]);
 				i++;
-			});
+				});
+
+			q_number=plant_index+1;
+			$('.Qnum').html(q_number);
+			$('.next').hide();
+			$('.tryagain').hide();
+			$('.submit').show();
+
 
 		}
 
-		newQuestion();
+		newQuestion(current_index);
+
 
 		//Record the selected answer
 		$(document).on("click", "img", function(){
 
-			$(this).css("border", "6px solid #d9bfa7");
-			submission= $(this). attr('src');
+			$('img').removeClass('selected');
+			$(this).addClass('selected');
+			submission= $(this).attr('src');
 		
 		});
 
 		//Click Button to check the answer
-		$("button").click(function(){
+		$(".submit").click(function(){
 
-			if(submission == woodyplants[0].correct){
+			if(submission == woodyplants[current_index].correct){
 
 				$(".text").text("This is the Correct Answer!");
 				$(".text").addClass("correct");
-				$("button").text("Next Question").addClass("next");
+				$(".submit").hide();
+				$(".next").show().unbind('click').bind("click", function(){
+					   
+					   		if(q_number < woodyplants.length){
+
+					   			++current_index;
+					   			
+						    	newQuestion(current_index);
+
+					   			}
+
+					   		else{
+					   				$('button').hide();
+					   				$('.text').hide();
+					   				$(".lastquestion").show();
+					   				
+					   			}
+
+						    });
 			}
+
+			else if(submission==""){
+
+
+				$(".text").animate({
+
+				});
+
+			}
+
 			else{
 
 				$(".text").text("This is not the Correct Answer!");
 				$(".text").addClass("incorrect");
-				$("button").text("Try Again").addClass("tryagain");
+				$(".selected").attr('id','incorrect');
+				$('.submit').hide();
+				$(".tryagain").show()
+						  .unbind('click')
+						  .bind('click',function(){
+							newQuestion(current_index);
+						});
+
 
 			}
 
 		});
+
+		
 
 
 
